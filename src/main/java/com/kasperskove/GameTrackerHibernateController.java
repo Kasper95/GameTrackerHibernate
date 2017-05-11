@@ -17,10 +17,12 @@ public class GameTrackerHibernateController {
     GameRepository games;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(Model model, String genre) {
+    public String home(Model model, String genre, Integer releaseYear) {
         List<Game> gameList;
         if (genre != null) {
             gameList = games.findByGenre(genre);
+        } else if (releaseYear != null) {
+            gameList = games.findByReleaseYear(releaseYear);
         } else {
             gameList = (List<Game>) games.findAll();
         }
