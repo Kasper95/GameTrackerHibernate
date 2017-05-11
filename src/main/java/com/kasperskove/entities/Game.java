@@ -5,21 +5,22 @@ import javax.persistence.*;
 @Entity
 @Table(name = "games")
 public class Game {
+
     @Id
     @GeneratedValue
     int id;
 
     @Column(nullable = false)
-    String name;
+    private String name;
 
     @Column(nullable = false)
-    String platform;
+    private String platform;
 
     @Column(nullable = false)
-    String genre;
+    private String genre;
 
     @Column(nullable = false)
-    int releaseYear;
+    private int releaseYear;
 
     public Game() {
     }
