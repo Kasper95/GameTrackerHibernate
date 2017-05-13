@@ -14,15 +14,19 @@ import java.util.List;
 public class GameTrackerHibernateController {
 
     @Autowired
+    private
     GameRepository games;
 
+    // retrieves list of games
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(Model model, String genre, Integer releaseYear) {
+    public String home(Model model, String genre, Integer releaseYear, String search) {
         List<Game> gameList;
         if (genre != null) {
             gameList = games.findByGenre(genre);
         } else if (releaseYear != null) {
             gameList = games.findByReleaseYear(releaseYear);
+        } else if (search != null) {
+            gameList = games.findByNameStartsWith(search);
         } else {
             gameList = (List<Game>) games.findAll();
         }
@@ -30,7 +34,8 @@ public class GameTrackerHibernateController {
         return "home";
     }
 
-    @RequestMapping(path = "/add-game", method = RequestMethod.POST) // notice post Method in html
+    // adds game entry to list
+    @RequestMapping(path = "/add-game", method = RequestMethod.POST)
     public String addGame(String gameName, String gamePlatform, String gameGenre, int gameYear) {
 
         Game game = new Game(gameName, gamePlatform, gameGenre, gameYear);
