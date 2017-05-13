@@ -19,7 +19,7 @@ public class GameTrackerHibernateController {
 
     // retrieves list of games
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(Model model, String genre, Integer releaseYear, String search) {
+    public String home(Model model, String genre, Integer releaseYear, String search, String searchYear) {
         List<Game> gameList;
         if (genre != null) {
             gameList = games.findByGenre(genre);
@@ -27,6 +27,8 @@ public class GameTrackerHibernateController {
             gameList = games.findByReleaseYear(releaseYear);
         } else if (search != null) {
             gameList = games.findByNameStartsWith(search);
+        } else if (searchYear != null){
+            gameList = games.findByReleaseYear(Integer.parseInt(searchYear));
         } else {
             gameList = (List<Game>) games.findAll();
         }
