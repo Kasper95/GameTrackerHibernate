@@ -1,0 +1,8 @@
+package com.kasperskove.interfaces;
+
+import com.kasperskove.entities.User;
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Integer> {
+    User findFirstByName(String userName);
+}
