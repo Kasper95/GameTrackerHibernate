@@ -4,6 +4,7 @@ import com.kasperskove.entities.Game;
 import com.kasperskove.entities.User;
 import com.kasperskove.interfaces.GameRepository;
 import com.kasperskove.interfaces.UserRepository;
+import com.kasperskove.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +18,10 @@ import java.util.List;
 public class GameTrackerHibernateController {
 
     @Autowired
-    UserRepository users;
+    private UserRepository users;
 
     @Autowired
-    private
-    GameRepository games;
+    private GameRepository games;
 
     // retrieves list of games
     @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -51,10 +51,10 @@ public class GameTrackerHibernateController {
     public String login(HttpSession session, String userName, String password) throws Exception {
         User user = users.findFirstByName(userName);
         if (user == null) {
-            user = new User(userName, password);
+            user = new User(userName, PasswordStorage.createHash(password));
             users.save(user);
         }
-        else if (!password.equals(user.getPassword())) {
+        else if (!PasswordStorage.verifyPassword(password, user.getPassword())) {
             throw new Exception("Incorrect password");
         }
         session.setAttribute("userName", userName);
